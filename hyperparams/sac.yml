@@ -14,6 +14,25 @@ RoboSkate-v0:
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
+RoboSkateGPU-v0:
+  n_timesteps: !!float 1e6
+  policy: 'MultiInputPolicy'
+  buffer_size: 1000000
+  ent_coef: 'auto'
+  batch_size: 256
+  gamma: 0.95
+  tau: 0.02
+  train_freq: 64
+  gradient_steps: 64
+  learning_rate: !!float 7.3e-4
+  learning_starts: 10000
+  normalize: True
+  use_sde: True
+  policy_kwargs: "dict( features_extractor_class=RoboSkateCombinedFeaturesExtractor,
+                        features_extractor_kwargs=dict(features_dim=128),
+                        log_std_init=-3,
+                        net_arch=[400, 300])"
+
 # Tuned
 MountainCarContinuous-v0:
   n_timesteps: !!float 50000
