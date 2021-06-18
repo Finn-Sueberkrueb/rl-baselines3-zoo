@@ -26,6 +26,8 @@ from stable_baselines3.common.preprocessing import is_image_space, is_image_spac
 from stable_baselines3.common.sb2_compat.rmsprop_tf_like import RMSpropTFLike  # noqa: F401
 from stable_baselines3.common.utils import constant_fn
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv, VecFrameStack, VecNormalize, VecTransposeImage
+from stable_baselines3.common.RoboSkateCombinedFeaturesExtractor import RoboSkateCombinedFeaturesExtractor
+from stable_baselines3.common.RoboSkateCombinedFeaturesExtractor import RoboSkateCombinedFeaturesExtractor
 
 # For custom activation fn
 from torch import nn as nn  # noqa: F401
