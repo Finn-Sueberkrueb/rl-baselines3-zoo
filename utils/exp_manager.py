@@ -17,7 +17,7 @@ from optuna.samplers import BaseSampler, RandomSampler, TPESampler
 from optuna.visualization import plot_optimization_history, plot_param_importances
 
 # For using HER with GoalEnv
-from stable_baselines3 import HerReplayBuffer  # noqa: F401
+from stable_baselines3.her import HerReplayBuffer  # noqa: F401
 from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback, EvalCallback
 from stable_baselines3.common.env_util import make_vec_env
