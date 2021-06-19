@@ -8,8 +8,14 @@ import gym
 import stable_baselines3 as sb3  # noqa: F401
 import torch as th  # noqa: F401
 import yaml
+# TODO: think about better solution for import
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'scripts', 'algos'))
+from msac import MSAC
+from sac import SAC
+from mdqn import MDQN
 from sb3_contrib import QRDQN, TQC
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
+from stable_baselines3 import A2C, DDPG, DQN, PPO, TD3
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.sb2_compat.rmsprop_tf_like import RMSpropTFLike  # noqa: F401
@@ -28,6 +34,9 @@ ALGOS = {
     # SB3 Contrib,
     "qrdqn": QRDQN,
     "tqc": TQC,
+    # own contribution
+    "msac": MSAC,
+    "mdqn": MDQN
 }
 
 

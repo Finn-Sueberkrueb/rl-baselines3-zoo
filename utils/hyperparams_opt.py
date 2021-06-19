@@ -416,6 +416,7 @@ HYPERPARAMS_SAMPLER = {
     "a2c": sample_a2c_params,
     "ddpg": sample_ddpg_params,
     "dqn": sample_dqn_params,
+    "mdqn": sample_dqn_params,
     "qrdqn": sample_qrdqn_params,
     "sac": sample_sac_params,
     "tqc": sample_tqc_params,
