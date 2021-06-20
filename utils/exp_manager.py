@@ -187,6 +187,8 @@ class ExperimentManager(object):
             kwargs["callback"] = self.callbacks
 
         try:
+            #print("used policy network")
+            #print(model.policy)
             model.learn(self.n_timesteps, **kwargs)
         except KeyboardInterrupt:
             # this allows to save the model when interrupting training
