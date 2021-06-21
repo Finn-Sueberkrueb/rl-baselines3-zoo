@@ -116,10 +116,10 @@ if __name__ == "__main__":  # noqa: C901
 
     # the text displayed will be the first two words of the file
     def get_text_from_video_filename(filename: str) -> str:
-        match = re.search(r"^(\w+)-(\w+)", filename)
+        match = re.search(r"^(\w+)-(\w+)-(\w+)-(\w+)-(\w+)", filename)
         text = ""
         if match is not None:
-            text = f"{match.group(1)} {match.group(2)}"
+            text = f"{match.group(4)}-{match.group(5)}"
 
         return text
 
@@ -144,13 +144,13 @@ if __name__ == "__main__":  # noqa: C901
         for video_path in tmp_videos_path:
             file.write(f"file {video_path}\n")
 
-    final_video_path = os.path.abspath(os.path.join(video_folder, "training.mp4"))
+    final_video_path = os.path.abspath(os.path.join(video_folder, "training_" + args.algo + "_" + args.env + "_" + str(args.exp_id) + ".mp4"))
     os.system(f"ffmpeg -f concat -safe 0 -i {ffmpeg_text_file} -c copy {final_video_path} -hide_banner -loglevel error")
     os.remove(ffmpeg_text_file)
     print(f"Saving video to {final_video_path}")
 
     if convert_to_gif:
-        final_gif_path = os.path.abspath(os.path.join(video_folder, "training.gif"))
+        final_gif_path = os.path.abspath(os.path.join(video_folder, "training_" + args.algo + "_" + args.env + "_" + str(args.exp_id) + ".gif"))
         os.system(f"ffmpeg -i {final_video_path} -vf fps=10 {final_gif_path} -hide_banner -loglevel error")
         print(f"Saving gif to {final_gif_path}")
 
