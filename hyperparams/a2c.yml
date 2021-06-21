@@ -1,7 +1,6 @@
-# Tuned
 RoboSkate-v0:
   normalize: true
-  n_envs: 2
+  n_envs: 6
   n_timesteps: !!float 2e6
   policy: 'MlpPolicy'
   ent_coef: 0.0
