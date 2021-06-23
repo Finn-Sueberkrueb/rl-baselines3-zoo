@@ -1,4 +1,4 @@
-RoboSkate-v0:
+RoboSkateNumerical-v0:
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
   learning_rate: !!float 7.3e-4
@@ -30,7 +30,7 @@ RoboSkateSegmentation-v0:
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
-RoboSkateGPU-v0:
+RoboSkateMultiInputPolicy-v0:
   n_timesteps: !!float 1e6
   policy: 'MultiInputPolicy'
   learning_rate: !!float 7.3e-4
