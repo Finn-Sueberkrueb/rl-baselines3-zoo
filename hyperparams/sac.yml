@@ -34,7 +34,7 @@ RoboSkateMultiInputPolicy-v0:
   n_timesteps: !!float 1e6
   policy: 'MultiInputPolicy'
   learning_rate: !!float 7.3e-4
-  buffer_size: 200000 # with image data it needs to be smaller
+  buffer_size: 100000 # with image data it needs to be smaller
   batch_size: 256
   ent_coef: 'auto'
   gamma: 0.98
