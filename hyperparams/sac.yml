@@ -2,7 +2,7 @@ RoboSkateNumerical-v0:
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
   learning_rate: !!float 7.3e-4
-  buffer_size: 300000
+  buffer_size: 20_000_000
   batch_size: 256
   ent_coef: 'auto'
   gamma: 0.98
