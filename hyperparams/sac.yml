@@ -2,7 +2,7 @@ RoboSkateNumerical-v0:
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
   learning_rate: !!float 7.3e-4
-  buffer_size: 20_000_000
+  buffer_size: 200_000_000
   batch_size: 256
   ent_coef: 'auto'
   gamma: 0.98
@@ -18,7 +18,7 @@ RoboSkateSegmentation-v0:
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
   learning_rate: !!float 7.3e-4
-  buffer_size: 300000
+  buffer_size: 50_000_000
   batch_size: 256
   ent_coef: 'auto'
   gamma: 0.98
@@ -34,7 +34,7 @@ RoboSkateMultiInputPolicy-v0:
   n_timesteps: !!float 1e6
   policy: 'MultiInputPolicy'
   learning_rate: !!float 7.3e-4
-  buffer_size: 100000 # with image data it needs to be smaller
+  buffer_size: 100000 # with image data it needs to be smaller The server could freeze if the memory is full and someone in the university has to restart it.
   batch_size: 256
   ent_coef: 'auto'
   gamma: 0.98
