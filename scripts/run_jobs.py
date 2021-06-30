@@ -5,9 +5,9 @@ import subprocess
 
 import numpy as np
 
-ALGOS = ["sac", "msac"]
-ENVS = ["HalfCheetahBulletEnv-v0"]
-SEEDS = [1, 2, 3]
+ALGOS = ["sac"]
+ENVS = ["HalfCheetahBulletEnv-v0", "AntBulletEnv-v0"]
+SEEDS = [1, 2, 3, 4, 5]
 # EVAL_FREQ = 10000
 # N_EVAL_EPISODES = 5
 # LOG_STD_INIT = [-6, -5, -4, -3, -2, -1, 0, 1]
@@ -33,7 +33,7 @@ for seed in SEEDS:
                 "--tensorboard-log",
                 "logs/tensorboard",
                 "--n-timesteps",
-                10000,
+                1000000,
                 "--seed",
                 seed
             ]
