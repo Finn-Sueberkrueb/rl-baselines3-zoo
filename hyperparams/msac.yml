@@ -55,6 +55,10 @@ BipedalWalker-v3:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
+  munchausen_scaling: 0.9
+  munchausen_clipping_low: -1
+  munchausen_clipping_high: 0
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Almost tuned
@@ -70,6 +74,10 @@ BipedalWalkerHardcore-v3:
   train_freq: 1
   gradient_steps: 1
   learning_starts: 10000
+  munchausen_scaling: 0.9
+  munchausen_clipping_low: -1
+  munchausen_clipping_high: 0
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 # === Bullet envs ===
@@ -99,7 +107,7 @@ HalfCheetahBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'default']
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Tuned
@@ -119,7 +127,7 @@ AntBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'default']
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HopperBulletEnv-v0:
@@ -138,7 +146,7 @@ HopperBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'default']
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 Walker2DBulletEnv-v0:
@@ -157,7 +165,7 @@ Walker2DBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'default']
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
@@ -175,6 +183,10 @@ ReacherBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
+  munchausen_scaling: 0.9
+  munchausen_clipping_low: -1
+  munchausen_clipping_high: 0
+  munchausen_mode: 'no_clipping' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HumanoidBulletEnv-v0:
