@@ -5,16 +5,16 @@ import subprocess
 
 import numpy as np
 
-ALGOS = ["sac"]
+ALGOS = ["msac"]
 ENVS = ["HalfCheetahBulletEnv-v0", "AntBulletEnv-v0"]
-SEEDS = [1, 2, 3, 4, 5]
+SEEDS = [1, 2, 3]
 # EVAL_FREQ = 10000
 # N_EVAL_EPISODES = 5
 # LOG_STD_INIT = [-6, -5, -4, -3, -2, -1, 0, 1]
 
-for seed in SEEDS:
-    for algo in ALGOS:
-        for env_id in ENVS:
+for algo in ALGOS:
+    for env_id in ENVS:
+        for seed in SEEDS:
         # for log_std_init in LOG_STD_INIT:
         #     log_folder = f"logs_std_{np.exp(log_std_init):.4f}"
             args = [
