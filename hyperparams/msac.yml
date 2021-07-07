@@ -175,6 +175,10 @@ ReacherBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
+  munchausen_scaling: 0.9
+  munchausen_clipping_low: -1
+  munchausen_clipping_high: 0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'default']
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HumanoidBulletEnv-v0:
