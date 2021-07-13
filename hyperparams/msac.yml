@@ -15,8 +15,9 @@ MountainCarContinuous-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3.67, net_arch=[64, 64])"
 
 Pendulum-v0:
@@ -46,8 +47,9 @@ LunarLanderContinuous-v2:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 
@@ -68,8 +70,9 @@ BipedalWalker-v3:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Almost tuned
@@ -88,8 +91,9 @@ BipedalWalkerHardcore-v3:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 # === Bullet envs ===
@@ -119,8 +123,9 @@ HalfCheetahBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Tuned
@@ -140,8 +145,9 @@ AntBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HopperBulletEnv-v0:
@@ -160,8 +166,9 @@ HopperBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 Walker2DBulletEnv-v0:
@@ -180,8 +187,9 @@ Walker2DBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
@@ -202,8 +210,9 @@ ReacherBulletEnv-v0:
   munchausen_scaling: 0.9
   munchausen_clipping_low: -1
   munchausen_clipping_high: 0
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_normalized', 'default']
-  reward_div: 1.0
+  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicshift_normalized', 'default']
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HumanoidBulletEnv-v0:
@@ -216,7 +225,8 @@ HumanoidBulletEnv-v0:
   ent_coef: 'auto'
   train_freq: 1
   gradient_steps: 1
-  reward_div: 1.0
+  reward_scale: 1.0
+  dynamicshift_hyperparameter: 0.0
   learning_starts: 1000
 
 # Tuned

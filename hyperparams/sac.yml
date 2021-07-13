@@ -55,7 +55,7 @@ BipedalWalker-v3:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Almost tuned
@@ -71,7 +71,7 @@ BipedalWalkerHardcore-v3:
   train_freq: 1
   gradient_steps: 1
   learning_starts: 10000
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 # === Bullet envs ===
@@ -98,7 +98,7 @@ HalfCheetahBulletEnv-v0:
   learning_starts: 10000
   replay_buffer_kwargs: "dict(handle_timeout_termination=True)"
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Tuned
@@ -115,7 +115,7 @@ AntBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HopperBulletEnv-v0:
@@ -131,7 +131,7 @@ HopperBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 Walker2DBulletEnv-v0:
@@ -147,7 +147,7 @@ Walker2DBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
@@ -165,7 +165,7 @@ ReacherBulletEnv-v0:
   gradient_steps: 64
   learning_starts: 10000
   use_sde: True
-  reward_div: 1.0
+  reward_scale: 1.0
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HumanoidBulletEnv-v0:
@@ -178,7 +178,7 @@ HumanoidBulletEnv-v0:
   ent_coef: 'auto'
   train_freq: 1
   gradient_steps: 1
-  reward_div: 1.0
+  reward_scale: 1.0
   learning_starts: 1000
 
 # Tuned
