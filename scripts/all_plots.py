@@ -33,6 +33,9 @@ parser.add_argument("--no-display", action="store_true", default=False, help="Do
 parser.add_argument(
     "-print", "--print-n-trials", action="store_true", default=False, help="Print the number of trial for each result"
 )
+parser.add_argument(
+    "-exp", "--experiment-names", help="Separate different experiments by checking their suffix", nargs="+", type=str, default="", 
+)
 args = parser.parse_args()
 
 # Activate seaborn
@@ -51,154 +54,166 @@ for env in args.env:  # noqa: C901
 
     x_label_suffix = "" if args.no_million else "(in Million)"
     plt.xlabel(f"Timesteps {x_label_suffix}", fontsize=14)
-    plt.ylabel("Score", fontsize=14)
+    # plt.ylabel("Score", fontsize=14)
+    plt.ylabel("Mean Reward", fontsize=14) # TODO: Change
     results[env] = {}
     post_processed_results[env] = {}
 
     for algo in args.algos:
         for folder_idx, exp_folder in enumerate(args.exp_folders):
+            for exp in args.experiment_names:
 
-            log_path = os.path.join(exp_folder, algo.lower())
+                log_path = os.path.join(exp_folder, algo.lower())
 
-            if not os.path.isdir(log_path):
-                continue
-
-            results[env][f"{args.labels[folder_idx]}-{algo}"] = 0.0
-
-            dirs = [
-                os.path.join(log_path, d)
-                for d in os.listdir(log_path)
-                if (env in d and os.path.isdir(os.path.join(log_path, d)))
-            ]
-
-            max_len = 0
-            merged_timesteps, merged_results = [], []
-            last_eval = []
-            timesteps = np.empty(0)
-            for _, dir_ in enumerate(dirs):
-                try:
-                    log = np.load(os.path.join(dir_, "evaluations.npz"))
-                except FileNotFoundError:
-                    print("Eval not found for", dir_)
+                if not os.path.isdir(log_path):
                     continue
 
-                mean_ = np.squeeze(log["results"].mean(axis=1))
+                results[env][f"{args.labels[folder_idx]}-{algo}"] = 0.0
 
-                if mean_.shape == ():
-                    continue
+                dirs = [
+                    os.path.join(log_path, d)
+                    for d in os.listdir(log_path)
+                    # if (env in d and os.path.isdir(os.path.join(log_path, d)))
+                    if (env in d and d.endswith(exp) and os.path.isdir(os.path.join(log_path, d)))
+                ]
 
-                max_len = max(max_len, len(mean_))
-                if len(log["timesteps"]) >= max_len:
-                    timesteps = log["timesteps"]
+                max_len = 0
+                merged_timesteps, merged_results = [], []
+                last_eval = []
+                timesteps = np.empty(0)
+                for _, dir_ in enumerate(dirs):
+                    try:
+                        log = np.load(os.path.join(dir_, "evaluations.npz"))
+                    except FileNotFoundError:
+                        print("Eval not found for", dir_)
+                        continue
 
-                # For post-processing
-                merged_timesteps.append(log["timesteps"])
-                merged_results.append(log[args.key])
+                    mean_ = np.squeeze(log["results"].mean(axis=1))
 
-                # Truncate the plots
-                while timesteps[max_len - 1] > args.max_timesteps:
-                    max_len -= 1
-                timesteps = timesteps[:max_len]
+                    if mean_.shape == ():
+                        continue
 
-                if len(log[args.key]) >= max_len:
-                    last_eval.append(log[args.key][max_len - 1])
-                else:
-                    last_eval.append(log[args.key][-1])
+                    max_len = max(max_len, len(mean_))
+                    if len(log["timesteps"]) >= max_len:
+                        timesteps = log["timesteps"]
 
-            # Merge runs with different eval freq:
-            # ex: (100,) eval vs (10,)
-            # in that case, downsample (100,) to match the (10,) samples
-            # Discard all jobs that are < min_timesteps
-            min_trials = []
-            if args.min_timesteps > 0:
-                min_ = np.inf
-                for n_timesteps in merged_timesteps:
-                    if n_timesteps[-1] >= args.min_timesteps:
-                        min_ = min(min_, len(n_timesteps))
-                        if len(n_timesteps) == min_:
-                            max_len = len(n_timesteps)
-                            # Truncate the plots
-                            while n_timesteps[max_len - 1] > args.max_timesteps:
-                                max_len -= 1
-                            timesteps = n_timesteps[:max_len]
-                # Avoid modifying original aggregated results
-                merged_results_ = deepcopy(merged_results)
-                # Downsample if needed
-                for trial_idx, n_timesteps in enumerate(merged_timesteps):
-                    # We assume they are the same, or they will be discarded in the next step
-                    if len(n_timesteps) == min_ or n_timesteps[-1] < args.min_timesteps:
-                        pass
+                    # For post-processing
+                    merged_timesteps.append(log["timesteps"])
+                    merged_results.append(log[args.key])
+
+                    # Truncate the plots
+                    while timesteps[max_len - 1] > args.max_timesteps:
+                        max_len -= 1
+                    timesteps = timesteps[:max_len]
+
+                    if len(log[args.key]) >= max_len:
+                        last_eval.append(log[args.key][max_len - 1])
                     else:
-                        new_merged_results = []
-                        # Nearest neighbour
-                        distance_mat = distance_matrix(n_timesteps.reshape(-1, 1), timesteps.reshape(-1, 1))
-                        closest_indices = distance_mat.argmin(axis=0)
-                        for closest_idx in closest_indices:
-                            new_merged_results.append(merged_results_[trial_idx][closest_idx])
-                        merged_results[trial_idx] = new_merged_results
-                        last_eval[trial_idx] = merged_results_[trial_idx][closest_indices[-1]]
+                        last_eval.append(log[args.key][-1])
 
-            # Remove incomplete runs
-            merged_results_tmp, last_eval_tmp = [], []
-            for idx in range(len(merged_results)):
-                if len(merged_results[idx]) >= max_len:
-                    merged_results_tmp.append(merged_results[idx][:max_len])
-                    last_eval_tmp.append(last_eval[idx])
-            merged_results = merged_results_tmp
-            last_eval = last_eval_tmp
+                # Merge runs with different eval freq:
+                # ex: (100,) eval vs (10,)
+                # in that case, downsample (100,) to match the (10,) samples
+                # Discard all jobs that are < min_timesteps
+                min_trials = []
+                if args.min_timesteps > 0:
+                    min_ = np.inf
+                    for n_timesteps in merged_timesteps:
+                        if n_timesteps[-1] >= args.min_timesteps:
+                            min_ = min(min_, len(n_timesteps))
+                            if len(n_timesteps) == min_:
+                                max_len = len(n_timesteps)
+                                # Truncate the plots
+                                while n_timesteps[max_len - 1] > args.max_timesteps:
+                                    max_len -= 1
+                                timesteps = n_timesteps[:max_len]
+                    # Avoid modifying original aggregated results
+                    merged_results_ = deepcopy(merged_results)
+                    # Downsample if needed
+                    for trial_idx, n_timesteps in enumerate(merged_timesteps):
+                        # We assume they are the same, or they will be discarded in the next step
+                        if len(n_timesteps) == min_ or n_timesteps[-1] < args.min_timesteps:
+                            pass
+                        else:
+                            new_merged_results = []
+                            # Nearest neighbour
+                            distance_mat = distance_matrix(n_timesteps.reshape(-1, 1), timesteps.reshape(-1, 1))
+                            closest_indices = distance_mat.argmin(axis=0)
+                            for closest_idx in closest_indices:
+                                new_merged_results.append(merged_results_[trial_idx][closest_idx])
+                            merged_results[trial_idx] = new_merged_results
+                            last_eval[trial_idx] = merged_results_[trial_idx][closest_indices[-1]]
 
-            # Post-process
-            if len(merged_results) > 0:
-                # shape: (n_trials, n_eval * n_eval_episodes)
-                merged_results = np.array(merged_results)
-                n_trials = len(merged_results)
-                n_eval = len(timesteps)
+                # Remove incomplete runs
+                merged_results_tmp, last_eval_tmp = [], []
+                for idx in range(len(merged_results)):
+                    if len(merged_results[idx]) >= max_len:
+                        merged_results_tmp.append(merged_results[idx][:max_len])
+                        last_eval_tmp.append(last_eval[idx])
+                merged_results = merged_results_tmp
+                last_eval = last_eval_tmp
 
-                if args.print_n_trials:
-                    print(f"{env}-{algo}-{args.labels[folder_idx]}: {n_trials}")
+                ############# Adaption #############
+                # merged_results_all = merged_results
+                # tmp = []
+                # for arr in merged_results_all:
+                #     tmp.append(arr)
+                #     merged_results = tmp
+                ############# Adaption #############
 
-                # reshape to (n_trials, n_eval, n_eval_episodes)
-                evaluations = merged_results.reshape((n_trials, n_eval, -1))
-                # re-arrange to (n_eval, n_trials, n_eval_episodes)
-                evaluations = np.swapaxes(evaluations, 0, 1)
-                # (n_eval,)
-                mean_ = np.mean(evaluations, axis=(1, 2))
-                # (n_eval, n_trials)
-                mean_per_eval = np.mean(evaluations, axis=-1)
-                # (n_eval,)
-                std_ = np.std(mean_per_eval, axis=-1)
-                # std: error:
-                std_error = std_ / np.sqrt(n_trials)
-                # Take last evaluation
-                # shape: (n_trials, n_eval_episodes) to (n_trials,)
-                last_evals = np.array(last_eval).squeeze().mean(axis=-1)
-                # Standard deviation of the mean performance for the last eval
-                std_last_eval = np.std(last_evals)
-                # Compute standard error
-                std_error_last_eval = std_last_eval / np.sqrt(n_trials)
+                # Post-process
+                if len(merged_results) > 0:
+                    # shape: (n_trials, n_eval * n_eval_episodes)
+                    merged_results = np.array(merged_results)
+                    n_trials = len(merged_results)
+                    n_eval = len(timesteps)
 
-                if args.median:
-                    results[env][f"{algo}-{args.labels[folder_idx]}"] = f"{np.median(last_evals):.0f}"
-                else:
-                    results[env][
-                        f"{algo}-{args.labels[folder_idx]}"
-                    ] = f"{np.mean(last_evals):.0f} +/- {std_error_last_eval:.0f}"
+                    if args.print_n_trials:
+                        # print(f"{env}-{algo}-{args.labels[folder_idx]}: {n_trials}")
+                        print(f"{env}_{algo}_{exp}: {n_trials}")
 
-                # x axis in Millions of timesteps
-                divider = 1e6
-                if args.no_million:
-                    divider = 1.0
+                    # reshape to (n_trials, n_eval, n_eval_episodes)
+                    evaluations = merged_results.reshape((n_trials, n_eval, -1))
+                    # re-arrange to (n_eval, n_trials, n_eval_episodes)
+                    evaluations = np.swapaxes(evaluations, 0, 1)
+                    # (n_eval,)
+                    mean_ = np.mean(evaluations, axis=(1, 2))
+                    # (n_eval, n_trials)
+                    mean_per_eval = np.mean(evaluations, axis=-1)
+                    # (n_eval,)
+                    std_ = np.std(mean_per_eval, axis=-1)
+                    # std: error:
+                    std_error = std_ / np.sqrt(n_trials)
+                    # Take last evaluation
+                    # shape: (n_trials, n_eval_episodes) to (n_trials,)
+                    last_evals = np.array(last_eval).squeeze().mean(axis=-1)
+                    # Standard deviation of the mean performance for the last eval
+                    std_last_eval = np.std(last_evals)
+                    # Compute standard error
+                    std_error_last_eval = std_last_eval / np.sqrt(n_trials)
 
-                post_processed_results[env][f"{algo}-{args.labels[folder_idx]}"] = {
-                    "timesteps": timesteps,
-                    "mean": mean_,
-                    "std_error": std_error,
-                    "last_evals": last_evals,
-                    "std_error_last_eval": std_error_last_eval,
-                }
+                    if args.median:
+                        results[env][f"{algo}-{args.labels[folder_idx]}"] = f"{np.median(last_evals):.0f}"
+                    else:
+                        results[env][
+                            f"{algo}-{args.labels[folder_idx]}"
+                        ] = f"{np.mean(last_evals):.0f} +/- {std_error_last_eval:.0f}"
 
-                plt.plot(timesteps / divider, mean_, label=f"{algo}-{args.labels[folder_idx]}", linewidth=3)
-                plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.5)
+                    # x axis in Millions of timesteps
+                    divider = 1e6
+                    if args.no_million:
+                        divider = 1.0
+
+                    post_processed_results[env][f"{algo}-{args.labels[folder_idx]}"] = {
+                        "timesteps": timesteps,
+                        "mean": mean_,
+                        "std_error": std_error,
+                        "last_evals": last_evals,
+                        "std_error_last_eval": std_error_last_eval,
+                    }
+
+                    plt.plot(timesteps / divider, mean_, label=f"{algo}_{exp}", linewidth=1.5)
+                    plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.3)
 
     plt.legend()
 
