@@ -71,14 +71,16 @@ def main():  # noqa: C901
     folder = args.folder
 
     if args.exp_id == 0:
-        args.exp_id = get_latest_run_id(os.path.join(folder, algo), env_id)
+        #args.exp_id = get_latest_run_id(os.path.join(folder, algo), env_id)
+        args.exp_id = get_latest_run_id(os.path.join(folder), env_id)
         print(f"Loading latest experiment, id={args.exp_id}")
 
     # Sanity checks
     if args.exp_id > 0:
         log_path = os.path.join(folder, algo, f"{env_id}_{args.exp_id}")
     else:
-        log_path = os.path.join(folder, algo)
+        #log_path = os.path.join(folder, algo)
+        log_path = os.path.join(folder)
 
     assert os.path.isdir(log_path), f"The {log_path} folder was not found"
 
@@ -184,9 +186,16 @@ def main():  # noqa: C901
     # For HER, monitor success rate
     successes = []
     try:
+
         for _ in range(args.n_timesteps):
             action, state = model.predict(obs, state=state, deterministic=deterministic)
             obs, reward, done, infos = env.step(action)
+
+            if not 'all_states' in locals():
+                all_states = np.array([obs[0]])
+            else:
+                all_states = np.concatenate((all_states, np.array([obs[0]])), axis=0)
+
             if not args.no_render:
                 env.render("human")
 
@@ -205,6 +214,10 @@ def main():  # noqa: C901
                 if done and not is_atari and args.verbose > 0:
                     # NOTE: for env using VecNormalize, the mean reward
                     # is a normalized reward when `--norm_reward` flag is passed
+                    state_variance = np.cov(all_states, rowvar=False)
+                    print(state_variance)
+                    print("state variance mean: " + str(np.mean(state_variance)))
+                    print("state variance sum: " + str(np.sum(state_variance)))
                     print(f"Episode Reward: {episode_reward:.2f}")
                     print("Episode Length", ep_len)
                     episode_rewards.append(episode_reward)
@@ -221,6 +234,9 @@ def main():  # noqa: C901
                     if infos[0].get("is_success") is not None:
                         successes.append(infos[0].get("is_success", False))
                         episode_reward, ep_len = 0.0, 0
+
+
+
 
     except KeyboardInterrupt:
         pass
