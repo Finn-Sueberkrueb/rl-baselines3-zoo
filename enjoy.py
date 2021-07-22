@@ -214,8 +214,8 @@ def main():  # noqa: C901
                 if done and not is_atari and args.verbose > 0:
                     # NOTE: for env using VecNormalize, the mean reward
                     # is a normalized reward when `--norm_reward` flag is passed
-                    state_variance = np.cov(all_states, rowvar=False)
-                    print(state_variance)
+                    state_variance = np.var(all_states, axis=0)
+                    print(state_variance.shape)
                     print("state variance mean: " + str(np.mean(state_variance)))
                     print("state variance sum: " + str(np.sum(state_variance)))
                     print(f"Episode Reward: {episode_reward:.2f}")

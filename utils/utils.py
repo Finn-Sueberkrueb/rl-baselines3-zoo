@@ -13,8 +13,6 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'scripts', 'algos'))
 from msac import MSAC
 from sac import SAC
-from dqn import DQN
-from mdqn import MDQN
 from sb3_contrib import QRDQN, TQC
 from stable_baselines3 import A2C, DDPG, PPO, TD3
 from stable_baselines3.common.callbacks import BaseCallback
@@ -28,7 +26,6 @@ from torch import nn as nn  # noqa: F401 pylint: disable=unused-import
 ALGOS = {
     "a2c": A2C,
     "ddpg": DDPG,
-    "dqn": DQN,
     "ppo": PPO,
     "sac": SAC,
     "td3": TD3,
@@ -37,7 +34,6 @@ ALGOS = {
     "tqc": TQC,
     # own contribution
     "msac": MSAC,
-    "mdqn": MDQN
 }
 
 
