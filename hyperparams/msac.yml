@@ -13,22 +13,12 @@ MountainCarContinuous-v0:
   learning_starts: 0
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3.67, net_arch=[64, 64])"
-
-Pendulum-v0:
-  # callback:
-  #   - utils.callbacks.ParallelTrainCallback
-  n_timesteps: 20000
-  policy: 'MlpPolicy'
-  learning_rate: !!float 1e-3
-  use_sde: True
-  train_freq: [1, "episode"]
-  gradient_steps: -1
-  policy_kwargs: "dict(log_std_init=-2, net_arch=[64, 64])"
 
 LunarLanderContinuous-v2:
   n_timesteps: !!float 5e5
@@ -44,10 +34,11 @@ LunarLanderContinuous-v2:
   gradient_steps: 1
   learning_starts: 10000
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 
@@ -66,10 +57,11 @@ BipedalWalker-v3:
   learning_starts: 10000
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Almost tuned
@@ -86,10 +78,11 @@ BipedalWalkerHardcore-v3:
   gradient_steps: 1
   learning_starts: 10000
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(net_arch=[400, 300])"
 
 # === Bullet envs ===
@@ -117,10 +110,11 @@ HalfCheetahBulletEnv-v0:
   replay_buffer_kwargs: "dict(handle_timeout_termination=True)"
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 # Tuned
@@ -138,10 +132,11 @@ AntBulletEnv-v0:
   learning_starts: 10000
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 HopperBulletEnv-v0:
@@ -158,10 +153,11 @@ HopperBulletEnv-v0:
   learning_starts: 10000
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 Walker2DBulletEnv-v0:
@@ -178,10 +174,11 @@ Walker2DBulletEnv-v0:
   learning_starts: 10000
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
 
@@ -200,9 +197,10 @@ ReacherBulletEnv-v0:
   learning_starts: 10000
   use_sde: True
   munchausen_scaling: 0.9
-  munchausen_clipping_low: -1
-  munchausen_clipping_high: 1
-  munchausen_mode: 'default' # ['no_clipping', 'fix_scale', 'shift', 'dynamicshift_target_entropy', 'dynamicshift', 'dynamicshift_max', 'dynamicshift_hyper', 'dynamicmean_hyper', 'dynamicshift_median', 'dynamicshift_normalized', 'default']
-  dynamicshift_hyperparameter: 0.0
+  munchausen_clipping_low: -10
+  munchausen_clipping_high: 10
+  munchausen_mode: 'dynamicshift'
+  dynamicshift_hyperparameter: -10.0
+  munchausen_state_based: True
   policy_kwargs: "dict(log_std_init=-3, net_arch=[400, 300])"
 
