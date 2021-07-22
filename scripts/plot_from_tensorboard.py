@@ -38,7 +38,7 @@ parser.add_argument(
 parser.add_argument(
     "-exp", "--experiment-names", help="Separate different experiments by checking their suffix", nargs="+", type=str, default="", 
 )
-parser.add_argument("-t", "--tag", help="" "", default="eval/mean_reward", type=str)
+parser.add_argument("-t", "--tag", help="Specify tag from tensorboard here to plot it", default="eval/mean_reward", type=str)
 args = parser.parse_args()
 
 # Activate seaborn
@@ -202,7 +202,12 @@ for env in args.env:  # noqa: C901
                         "std_error_last_eval": std_error_last_eval,
                     }
 
-                    plt.plot(timesteps / divider, mean_, label=f"{algo}_{exp}", linewidth=1.5)
+                    if algo == "SAC":
+                        plt.plot(timesteps / divider, mean_, label=f"{algo}", linewidth=1.5)
+                    elif "replay_log_prob" in args.labels[folder_idx]:
+                        plt.plot(timesteps / divider, mean_, label="$\mathregular{M-SAC_a}$, β = -10, τ = 0.01", linewidth=1.5)
+                    else:
+                        plt.plot(timesteps / divider, mean_, label="$\mathregular{M-SAC_s}$, β = -10", linewidth=1.5)
                     plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.3)
 
     plt.legend()
