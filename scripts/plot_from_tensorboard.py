@@ -64,7 +64,7 @@ for env in args.env:  # noqa: C901
 
     for algo in args.algos:
         for folder_idx, exp_folder in enumerate(args.exp_folders):
-            for exp in args.experiment_names:
+            for exp_idx, exp in enumerate(args.experiment_names):
 
                 log_path = os.path.join(exp_folder, "tensorboard")
 
@@ -82,13 +82,15 @@ for env in args.env:  # noqa: C901
                 if not(env in log_path):
                     continue 
 
-                if algo == "MSAC":
+                if algo == "MSAC" or algo == "M-SAC":
                     algo = "M-SAC"
+                else:
+                    exp = ""
 
                 dirs = [
                     os.path.join(log_path, d)
                     for d in os.listdir(log_path)
-                    if (d.startswith(algo) and d.endswith(exp) and os.path.isdir(os.path.join(log_path, d)))
+                    if (d.startswith(algo) and (algo == "M-SAC" and d.endswith(exp) or exp_idx == 0 and d[-1].isdigit()) and os.path.isdir(os.path.join(log_path, d)))
                 ]
 
                 max_len = 0
@@ -202,12 +204,13 @@ for env in args.env:  # noqa: C901
                         "std_error_last_eval": std_error_last_eval,
                     }
 
-                    if algo == "SAC":
-                        plt.plot(timesteps / divider, mean_, label=f"{algo}", linewidth=1.5)
-                    elif "replay_log_prob" in args.labels[folder_idx]:
+                    if "state_based" in exp:
+                        plt.plot(timesteps / divider, mean_, label="$\mathregular{M-SAC_s}$, β = -10", linewidth=1.5)
+                    elif "action_based" in exp:
                         plt.plot(timesteps / divider, mean_, label="$\mathregular{M-SAC_a}$, β = -10, τ = 0.01", linewidth=1.5)
                     else:
-                        plt.plot(timesteps / divider, mean_, label="$\mathregular{M-SAC_s}$, β = -10", linewidth=1.5)
+                        plt.plot(timesteps / divider, mean_, label=f"{algo}", linewidth=1.5)
+                    # plt.plot(timesteps / divider, mean_, label=f"{algo}", linewidth=1.5)
                     plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.3)
 
     plt.legend()
@@ -229,8 +232,12 @@ for i, env in enumerate(args.env, start=1):
             algo = "M-SAC"
         for label in args.labels:
             for exp in args.experiment_names:
-                key = f"{algo}_{exp}-{label}"
-                if key in results[env]:
+                if algo == "M-SAC":
+                    key = f"{algo}_{exp}-{label}"
+                else:
+                    key = f"{algo}_-{label}"
+                    exp = ""
+                if key in results[env] and f"{algo}_{exp}" not in headers:
                     if i == 1:
                         value_matrix[0].append(label)
                         headers.append(f"{algo}_{exp}")
